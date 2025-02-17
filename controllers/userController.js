@@ -14,6 +14,22 @@ module.exports.addUserClient = async (req,res) => {
     }
 }
 
+
+
+module.exports.addUserClientWithImg = async (req,res) => {
+    try {
+        const { username, email, password } = req.body;
+        const roleClient = "client";
+        const user = await userModel.create(
+            { username, email, password, role: roleClient });
+        
+
+        res.status(200).json({user});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports.addUserAdmin = async (req,res) => {
     try {
         const { username, email, password } = req.body;
@@ -53,8 +69,8 @@ module.exports.getUsersById = async (req,res) => {
 module.exports.deleteUsersById = async (req,res) => {
     try {
         const {id} = req.params;
-        const checkIfUserExist = await userModel.findById(id);
-        if(!checkIfUserExist){
+        const UserExist = await userModel.findById(id);
+        if(!UserExist){
             throw new Error("User not found");
         }
         await userModel.findByIdAndDelete();
