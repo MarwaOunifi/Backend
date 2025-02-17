@@ -57,7 +57,7 @@ web_modules/
 # Optional stylelint cache
 .stylelintcache
 
-# Microbundle cache
+# Microbundle cache 
 .rpt2_cache/
 .rts2_cache_cjs/
 .rts2_cache_es/
@@ -128,3 +128,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.env
