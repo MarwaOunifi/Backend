@@ -14,7 +14,7 @@ var storage = multer.diskStorage(
         const filename = originalName;
         const fileIndex = 0;
 
-        while (fs.existsSync(path.join(uploadpath , filename))){
+        while (fs.existsSync(path.join(uploadfile , filename))){
             const baseName = path.basename(originalName, fileExtension);
             fileName = `${baseName}_${fileIndex}${fileExtension}`;
             fileIndex++;
