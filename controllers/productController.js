@@ -1,6 +1,7 @@
 
 const productModel = require('../models/productSchema');
 const commentModel = require('../models/commentSchema'); 
+const clientModel = require('../models/clientSchema'); 
 
 
 module.exports.addProduct = async (req,res) => {
@@ -40,7 +41,9 @@ module.exports.updateProductById = async (req,res) => {
     try {
         const {id} = req.params;
         const {name, description, produit_image , price } = req.body;
-        
+        if( !name || !description || !produit_image || !price){
+            throw new Error("All fields are required");
+        }
         await productModel.findByIdAndUpdate(id, {$set : { name, description, produit_image , price }})
         const updated =  productModel.findById(id);
         res.status(200).json("updated");
@@ -155,3 +158,61 @@ module.exports.addCommentToProduct = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+module.exports.affect = async (req, res) => {
+    try {
+      const { clientId, productId } = req.body;
+  
+      const productById = await productModel.findById(productId);
+  
+      if (!productById) {
+        throw new Error("product not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await productModel.findByIdAndUpdate(productId, {
+        $set: { clients: clientId },
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $push: { products: productId },
+      });
+  
+      res.status(200).json('affected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+  module.exports.desaffect = async (req, res) => {
+    try {
+      const { clientId, productId } = req.body;
+  
+      const productById = await productModel.findById(productId);
+  
+      if (!productById) {
+        throw new Error("Product not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await productModel.findByIdAndUpdate(productId, {
+        $unset: { clients: 1 },// null "" 
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $pull: { products: productId },
+      });
+  
+      res.status(200).json('desaffected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  

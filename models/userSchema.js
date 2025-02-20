@@ -28,6 +28,9 @@ password: {
  user_image : {type: String, required: false, default: "client.png"},
  count:{ type : Number , default: 0 } ,
  age : { type: Number , required: false},
+ 
+
+
 }, { timestamps: true }
 );
 

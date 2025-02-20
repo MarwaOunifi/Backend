@@ -18,7 +18,10 @@ const commentSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true
-    }
+    },
+    clients:[{ type: mongoose.Schema.Types.ObjectId, ref: "client"}],
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "product"}],
+    
 }, { timestamps: true });
 
 const Comment = mongoose.model('Comment', commentSchema);

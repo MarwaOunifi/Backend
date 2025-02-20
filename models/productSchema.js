@@ -28,7 +28,9 @@ stock : {
         enum: ["in stock", "out of stock"], 
         default: "in stock"
 },
-
+clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "client"}],
+carts : [{ type: mongoose.Schema.Types.ObjectId, ref: "cart"}],
+comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment"}],
 }, { timestamps: true }
 );
 

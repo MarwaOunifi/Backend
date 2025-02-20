@@ -33,7 +33,10 @@ module.exports.deleteProductFromCart = async (req, res) => {
 module.exports.updateProductQuantity = async (req,res) => {
     try {
         const {id} = req.params;
-        const {quantity} = req.body;
+        const {product_name, product_price, quantity } = req.body;
+        if(! id || !product_name || !product_price || !quantity){
+            throw new error(" ID, product name, product price and quantity are required");
+        }
         res.status(200).json("updated");
     } catch (error) {
         res.status(500).json({ message: error.message });

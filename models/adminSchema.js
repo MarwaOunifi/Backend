@@ -36,6 +36,10 @@ password: {
      type: Number ,
       required: false
 },
+orders: [{type: mongoose.Schema.Types.ObjectId, ref: "order"}],
+products: [{type: mongoose.Schema.Types.ObjectId, ref: "product"}],
+
+
 }, { timestamps: true }
 );
 

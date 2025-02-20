@@ -49,7 +49,9 @@ module.exports.updateOrderById = async (req,res) => {
     try {
         const {id} = req.params;
         const {total, status,} = req.body;
-        
+        if (!id || !total || !status) {
+            throw new Error("All fields are required");
+        }
         await orderModel.findByIdAndUpdate(id, {$set : { total, status}})
         const updated =  orderModel.findById(id);
         res.status(200).json("updated");

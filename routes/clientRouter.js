@@ -11,5 +11,5 @@ router.put('/updateClientById/:id', clientController.updateClientById );
 router.get('/searchClientByUsername', clientController.searchClientByUsername);
 router.get('/getAllClientSortByAge',clientController.getAllClientSortByAge);
 router.get('/getAllClient',clientController.getAllClient);
-router.delete('/deleteClientById',clientController.deleteClientById);
+router.delete('/deleteClientById/:id',clientController.deleteClientById);
 module.exports = router;

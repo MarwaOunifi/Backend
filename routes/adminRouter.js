@@ -10,5 +10,5 @@ router.get('/getAdminById/:id', adminController.getAdminById);
 router.put('/updateAdminById/:id', adminController.searchAdminByUsername);
 router.get('/getAllAdminSortByAge',adminController.getAllAdminSortByAge);
 router.get('/getAllAdmin',adminController.getAllAdmin);
-router.delete('/deleteAdminById',adminController.deleteAdminById);
+router.delete('/deleteAdminById/:id',adminController.deleteAdminById);
 module.exports = router;

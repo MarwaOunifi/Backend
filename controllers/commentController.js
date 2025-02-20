@@ -44,10 +44,10 @@ module.exports.getCommentByProductName = async (req,res) => {
 module.exports.updateCommentById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { comment } = req.body;
+        const { comment, clientId , productId ,rating} = req.body;
 
-        if (!id || !comment) {
-            throw new Error("ID and comment are required");
+        if (!id || !comment || !clientId || !productId || !rating) {
+            throw new Error("All fields are required");
         }
 
         const updatedComment = await commentModel.findByIdAndUpdate(
