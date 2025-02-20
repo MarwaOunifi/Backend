@@ -3,7 +3,7 @@ const clientModel = require('../models/clientSchema');
 module.exports.addClient = async (req,res) => {
     try {
         const { username, email, password } = req.body;
-        const user = await clientModel.create(
+        const client = await clientModel.create(
             { username, email, password});
         
         res.status(200).json({client});

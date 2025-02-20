@@ -9,4 +9,5 @@ router.get('/searchProductByProductName', productController.searchProductByProdu
 router.get('/searchProductByProductCategory', productController.searchProductByProductCategory);
 router.get('/getAllProduct', productController.getAllProduct);
 router.post('/addProductFavorite', productController.addProductFavorite);
+
 module.exports = router;

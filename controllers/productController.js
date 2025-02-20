@@ -1,4 +1,8 @@
+
 const productModel = require('../models/productSchema');
+const commentModel = require('../models/commentSchema'); 
+
+
 module.exports.addProduct = async (req,res) => {
     try {
         const {name,produit_image, description,categorie, price } = req.body;
@@ -129,6 +133,24 @@ module.exports.addProductFavorite = async (req, res) => {
         }
 
         res.status(200).json({ product: updatedProduct });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
+module.exports.addCommentToProduct = async (req, res) => {
+    try {
+        const { productId, userId, comment, rating } = req.body;
+        const newComment = await commentModel.create({
+            productId,
+            userId,
+            comment,
+            rating
+        });
+
+        res.status(200).json({ comment: newComment });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

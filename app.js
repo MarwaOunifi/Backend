@@ -13,7 +13,12 @@ const http = require('http') ;
 var indexRouter = require('./routes/indexRouter');
 var usersRouter = require('./routes/usersRouter');
 var osRouter = require('./routes/osRouter');
-
+var clientRouter = require('./routes/clientRouter');
+var adminRouter = require('./routes/adminRouter');
+var productRouter = require('./routes/productRouter');
+var orderRouter = require('./routes/orderRouter');
+var cartRouter = require('./routes/cartRouter');
+var commentRouter = require('./routes/commentRouter');
 
 var app = express();
 
@@ -28,6 +33,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/os', osRouter);
+app.use('/client', clientRouter);
+app.use('/admin', adminRouter);
+app.use('/product', productRouter);
+app.use('/order', orderRouter);
+app.use('/cart', cartRouter);
+app.use('/comment', commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
