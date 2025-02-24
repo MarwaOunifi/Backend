@@ -1,4 +1,5 @@
 const cartModel = require('../models/cartSchema');
+const clientModel = require('../models/clientSchema'); 
 
 
 module.exports.addProductToCart = async (req, res) => {
@@ -69,3 +70,61 @@ module.exports.searchProductInCart = async (req,res) => {
     }
 }
 
+
+module.exports.affect = async (req, res) => {
+    try {
+      const { clientId, cartId } = req.body;
+  
+      const cartById = await cartModel.findById(cartId);
+  
+      if (!cartById) {
+        throw new Error(" Cart not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await cartModel.findByIdAndUpdate(cartId, {
+        $set: { clients: clientId },
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $push: { carts: cartId },
+      });
+  
+      res.status(200).json('affected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+  module.exports.desaffect = async (req, res) => {
+    try {
+      const { clientId, cartId } = req.body;
+  
+      const cartById = await cartModel.findById(cartId);
+  
+      if (!cartById) {
+        throw new Error("cart not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await cartModel.findByIdAndUpdate(cartId, {
+        $unset: { clients: 1 },// null "" 
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $pull: { carts: cartId },
+      });
+  
+      res.status(200).json('desaffected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  

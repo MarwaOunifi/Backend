@@ -81,3 +81,61 @@ module.exports.deleteCommentById = async (req, res) => {
     }
 }
 
+
+module.exports.affect = async (req, res) => {
+    try {
+      const { clientId, commentId } = req.body;
+  
+      const commentById = await commentModel.findById(commentId);
+  
+      if (!commentById) {
+        throw new Error("comment not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await commentModel.findByIdAndUpdate(commentId, {
+        $set: { client: clientId },
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $push: { comments: commentId },
+      });
+  
+      res.status(200).json('affected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+  module.exports.desaffect = async (req, res) => {
+    try {
+      const { clientId, commentId } = req.body;
+  
+      const commentById = await commentModel.findById(commentId);
+  
+      if (!commentById) {
+        throw new Error("comment not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await commentModel.findByIdAndUpdate(commentId, {
+        $unset: { client: 1 },// null "" 
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $pull: { comments: compmentId },
+      });
+  
+      res.status(200).json('desaffected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  

@@ -1,4 +1,6 @@
 const orderModel = require('../models/orderSchema');
+const clientModel = require('../models/clientSchema'); 
+
 
 module.exports.addOrder = async (req, res) => {
     try {
@@ -93,3 +95,62 @@ module.exports.getAllOrderSortByTotalPrice = async (req,res) => {
         res.status(500).json({message: error.message});
     }
 }
+
+
+module.exports.affect = async (req, res) => {
+    try {
+      const { clientId, orderId } = req.body;
+  
+      const orderById = await orderModel.findById(orderId);
+  
+      if (!orderById) {
+        throw new Error("order not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await orderModel.findByIdAndUpdate(orderId, {
+        $set: { client: clientId },
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $push: { orders: orderId },
+      });
+  
+      res.status(200).json('affected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
+
+  module.exports.desaffect = async (req, res) => {
+    try {
+      const { clientId, orderId } = req.body;
+  
+      const orderById = await orderModel.findById(orderId);
+  
+      if (!orderById) {
+        throw new Error("order not found");
+      }
+      const clientExists = await clientModel.findById(clientId);
+      if (!clientExists) {
+        throw new Error("Client not found");
+      }
+  
+      await orderModel.findByIdAndUpdate(orderId, {
+        $unset: { client: 1 },// null "" 
+      });
+  
+      await clientModel.findByIdAndUpdate(clientId, {
+        $pull: { orders: orderId },
+      });
+  
+      res.status(200).json('desaffected');
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  

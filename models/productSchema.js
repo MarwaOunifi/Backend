@@ -29,8 +29,10 @@ stock : {
         default: "in stock"
 },
 clients: [{ type: mongoose.Schema.Types.ObjectId, ref: "client"}],
-carts : [{ type: mongoose.Schema.Types.ObjectId, ref: "cart"}],
-comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment"}],
+admin : {type: mongoose.Schema.Types.ObjectId, ref: "admin"},
+cart : {type: mongoose.Schema.Types.ObjectId, ref: "cart"},
+order : {type: mongoose.Schema.Types.ObjectId, ref: "order"},
+comments : [{ type: mongoose.Schema.Types.ObjectId, ref: "comment"}],
 }, { timestamps: true }
 );
 

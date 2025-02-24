@@ -21,9 +21,9 @@ const orderSchema = new mongoose.Schema({
             ref: "Product"
         }
     ],
-    clients: [{ type: mongoose.Schema.Types.ObjectId,ref: "client"}],
-    admin : { type: mongoose.Schema.Types.ObjectId, ref: "admin"},
-    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "cart"}],
+   client : {type: mongoose.Schema.Types.ObjectId, ref: "Client"},
+   admin : {type: mongoose.Schema.Types.ObjectId, ref: "Admin"},
+   products :[{type: mongoose.Schema.Types.ObjectId, ref: "product"}] ,
 }, { timestamps: true });
 
 orderSchema.pre("save", async function(next) {

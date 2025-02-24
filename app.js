@@ -4,11 +4,20 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
 require("dotenv").config();
 const {connectToMongoDb} = require("./config/db");
 
 
 const http = require('http') ;
+
+//gemini
+const fetch = require('node-fetch');
+global.fetch = fetch;
+global.Headers = fetch.Headers;
+global.Request = fetch.Request;
+global.Response = fetch.Response;
+
 
 var indexRouter = require('./routes/indexRouter');
 var usersRouter = require('./routes/usersRouter');
@@ -19,6 +28,7 @@ var productRouter = require('./routes/productRouter');
 var orderRouter = require('./routes/orderRouter');
 var cartRouter = require('./routes/cartRouter');
 var commentRouter = require('./routes/commentRouter');
+var geminiRouter = require('./routes/geminiRouter');
 
 var app = express();
 
@@ -39,7 +49,7 @@ app.use('/product', productRouter);
 app.use('/order', orderRouter);
 app.use('/cart', cartRouter);
 app.use('/comment', commentRouter);
-
+app.use('/gemini', geminiRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

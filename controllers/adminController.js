@@ -4,8 +4,11 @@ module.exports.addAdmin = async (req,res) => {
     try {
         const { username, email, password } = req.body;
         
-        const admin = await userModel.create(
-            { username, email, password,});
+        const admin = await adminModel.create({
+             username,
+             email,
+             password
+            });
     
         res.status(200).json({admin});
     } catch (error) {
@@ -33,7 +36,7 @@ module.exports.addAdminWithImg = async (req,res) => {
 module.exports.getAdminById = async (req,res) => {
     try {
         const {id} = req.params;
-        const admin = await adminModel.findById();
+        const admin = await adminModel.findById(id);
 
         res.status(200).json({admin});
     } catch (error) {

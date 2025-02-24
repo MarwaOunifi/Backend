@@ -4,6 +4,8 @@ const commentController = require('../controllers/commentController');
 /* GET home page. */
 
 router.post('/addComment',commentController.addComment);
+router.post('/affect',commentController.affect);
+router.post('/desaffect',commentController.desaffect);
 router.get('/getCommentByProductName', commentController.getCommentByProductName);
 router.put('/updateCommentByProductId/:id', commentController.updateCommentById);
 router.delete('/deleteCommentByProductId/:id', commentController.deleteCommentById);
