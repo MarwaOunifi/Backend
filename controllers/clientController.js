@@ -1,5 +1,13 @@
 const clientModel = require('../models/clientSchema');
+const productModel = require('../models/productSchema');
+const Client = require('../models/clientSchema');
+const jwt = require('jsonwebtoken');
 
+const maxTime = 24 *60 * 60 //24H
+//const maxTime = 1 * 60 //1min
+const createToken = (id) => {
+    return jwt.sign({id},'net secret pfe', {expiresIn: maxTime })
+}
 module.exports.addClient = async (req,res) => {
     try {
         const { username, email, password } = req.body;
@@ -113,3 +121,25 @@ module.exports.getAllClient = async (req,res) => {
     }
 }
 
+
+module.exports.login= async (req,res) => {
+    try {
+        const { email , password } = req.body;
+        const client = await clientModel.login(email, password)
+        const token = createToken(client._id)
+        res.cookie("jwt_token", token, {httpOnly:false,maxAge:maxTime * 1000})
+        res.status(200).json({client})
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+module.exports.logout= async (req,res) => {
+    try {
+  
+        res.cookie("jwt_token", "", {httpOnly:false,maxAge:1})
+        res.status(200).json("logged")
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}

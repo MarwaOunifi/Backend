@@ -5,6 +5,8 @@ const uploadFile = require('../middlewares/uploadFile');
 
 /* GET admin listing. */
 router.post('/addAdmin', adminController.addAdmin );
+router.post('/login', adminController.login );
+router.post('/logout', adminController.logout );
 router.get('/getAllAdmin', adminController.getAllAdmin);
 router.get('/getAdminById/:id', adminController.getAdminById);
 router.get('/getAllAdminSortByAge',adminController.getAllAdminSortByAge);

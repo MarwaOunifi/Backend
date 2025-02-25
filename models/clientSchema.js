@@ -36,8 +36,16 @@ password: {
      type: Number ,
       required: false
 },
+etat : {
+    type :Boolean,
+    default:false ,
+},
+ban : {
+    type : Boolean,
+    default : false,
+},
 products :[{type: mongoose.Schema.Types.ObjectId, ref: "product"}] ,
-carts :[{type: mongoose.Schema.Types.ObjectId, ref: "cart"}] ,
+carts :{type: mongoose.Schema.Types.ObjectId, ref: "cart"} ,
 orders :[{type: mongoose.Schema.Types.ObjectId, ref: "order"}] ,
 comments :[{type: mongoose.Schema.Types.ObjectId, ref: "comment"}] ,
 
@@ -49,6 +57,8 @@ clientSchema.pre("save", async function( next){
         const salt = await bcrypt.genSalt();
         const client =this;
         client.password = await bcrypt.hash(client.password, salt);
+        client.etat = false,// desactive account
+        client.ban = false,// account not banned
         client.count=client.count +1;
         next();
     } catch (error) {
@@ -63,5 +73,29 @@ clientSchema.post("save", async function(req , res ,next){
     }
 );
 
+clientSchema.statics.login = async function (email, password) {
+    //console.log(email, password);
+    const client = await this.findOne({ email });
+    //console.log(client)
+    if (client) {
+      const auth = await bcrypt.compare(password,client.password);
+      console.log(auth)
+      if (auth) {
+       // if (client.etat === true) {
+        //   if (client.ban === false) {
+            return client;
+        //   } else {
+        //     throw new Error("ban");
+        //   }
+        //} else {
+         // throw new Error("compte desactive ");
+        // }
+      } else {
+        throw new Error("password invalid"); 
+      }
+    } else {
+      throw new Error("email not found");
+    }
+};
 const client = mongoose.model("client", clientSchema);
 module.exports = client;

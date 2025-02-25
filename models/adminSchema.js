@@ -64,5 +64,30 @@ adminSchema.post("save", async function(req , res ,next){
     }
 );
 
+adminSchema.statics.login = async function (email, password) {
+    //console.log(email, password);
+    const admin = await this.findOne({ email });
+    //console.log(admin)
+    if (admin) {
+      const auth = await bcrypt.compare(password,admin.password);
+      console.log(auth)
+      if (auth) {
+       // if (admin.etat === true) {
+        //   if (admin.ban === false) {
+            return admin;
+        //   } else {
+        //     throw new Error("ban");
+        //   }
+        //} else {
+         // throw new Error("compte desactive ");
+        // }
+      } else {
+        throw new Error("password invalid"); 
+      }
+    } else {
+      throw new Error("email not found");
+    }
+};
+
 const admin = mongoose.model("admin", adminSchema);
 module.exports = admin;

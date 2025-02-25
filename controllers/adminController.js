@@ -1,4 +1,13 @@
 const adminModel = require('../models/adminSchema');
+const Admin = require('../models/adminSchema');
+const jwt = require('jsonwebtoken');
+
+const maxTime = 24 *60 * 60 //24H
+//const maxTime = 1 * 60 //1min
+const createToken = (id) => {
+    return jwt.sign({id},'net secret pfe', {expiresIn: maxTime })
+}
+
 
 module.exports.addAdmin = async (req,res) => {
     try {
@@ -108,6 +117,28 @@ module.exports.getAllAdmin = async (req,res) => {
         const adminList = await adminModel.find();
 
         res.status(200).json({adminList});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+module.exports.login= async (req,res) => {
+    try {
+        const { email , password } = req.body;
+        const admin = await adminModel.login(email, password)
+        const token = createToken(admin._id)
+        res.cookie("jwt_token", token, {httpOnly:false,maxAge:maxTime * 1000})
+        res.status(200).json({admin})
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+module.exports.logout= async (req,res) => {
+    try {
+  
+        res.cookie("jwt_token", "", {httpOnly:false,maxAge:1})
+        res.status(200).json("logged")
     } catch (error) {
         res.status(500).json({message: error.message});
     }
